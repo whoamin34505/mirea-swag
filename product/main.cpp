@@ -70,88 +70,82 @@ public:
 };
 
 // Структура "Узел" для двусвязного списка
-struct Node {
-    Product product;  // Товар, хранящийся в узле
-    Node* prev;       // Указатель на предыдущий узел
-    Node* next;       // Указатель на следующий узел
+template <typename T>
+class Node {
+public:
+    T tovar;
+    Node* prev;
+    Node* next;
 
-    // Конструктор для создания узла
-    Node(Product p) : product(p), prev(nullptr), next(nullptr) {}
+    Node(T new_tovar) : tovar(new_tovar), prev(nullptr), next(nullptr) {}
 };
 
 // Класс "Список товаров"
+template <typename F>
 class List {
 private:
-    Node* head;  // Указатель на начало списка
-    Node* tail;  // Указатель на конец списка
+    Node<F>* head;
+    Node<F>* tail;
 
 public:
-    // Конструктор по умолчанию
     List() : head(nullptr), tail(nullptr) {}
 
-    // Конструктор копирования
     List(const List& other) : head(nullptr), tail(nullptr) {
-        Node* temp = other.head;
+        Node<F>* temp = other.head;
         while (temp) {
-            addProduct(temp->product);  // Копируем товары из другого списка
+            addProduct(temp->tovar);
             temp = temp->next;
         }
     }
 
-    // Конструктор перемещения
     List(List&& other) noexcept : head(other.head), tail(other.tail) {
-        other.head = nullptr;  // Обнуляем указатели в исходном объекте
+        other.head = nullptr;
         other.tail = nullptr;
     }
 
-    // Деструктор для освобождения памяти
     ~List() {
         while (head) {
-            Node* temp = head;
+            Node<F>* temp = head;
             head = head->next;
-            delete temp;  // Удаляем каждый узел
+            delete temp;
         }
     }
 
-    // Метод для добавления товара в список
-    void addProduct(const Product& product) {
-        Node* newNode = new Node(product);  // Создаем новый узел
+    void addProduct(const F& product) {
+        Node<F>* newNode = new Node<F>(product);
         if (!head) {
-            head = tail = newNode;  // Если список пуст, новый узел становится головой и хвостом
+            head = tail = newNode;
         } else {
-            tail->next = newNode;  // Добавляем узел в конец списка
+            tail->next = newNode;
             newNode->prev = tail;
             tail = newNode;
         }
     }
 
-    // Метод для удаления товара по ID
     void deleteProduct(int productId) {
-        Node* temp = head;
+        Node<F>* temp = head;
         while (temp) {
-            if (temp->product.getId() == productId) {
-                // Обновляем связи между узлами
+            if (temp->tovar.getId() == productId) {
                 if (temp->prev) temp->prev->next = temp->next;
                 if (temp->next) temp->next->prev = temp->prev;
-                if (temp == head) head = temp->next;  // Если удаляем голову, обновляем head
-                if (temp == tail) tail = temp->prev;  // Если удаляем хвост, обновляем tail
-                delete temp;  // Освобождаем память
+                if (temp == head) head = temp->next;
+                if (temp == tail) tail = temp->prev;
+                delete temp;
                 return;
             }
             temp = temp->next;
         }
     }
 
-    // Метод для сортировки списка по цене (пузырьковая сортировка)
     void sortByPrice() {
-        if (!head || !head->next) return;  // Если список пуст или содержит один элемент, выходим
+        if (!head || !head->next) return;
         bool swapped;
         do {
             swapped = false;
-            Node* temp = head;
+            Node<F>* temp = head;
             while (temp->next) {
-                if (temp->product.getPrice() > temp->next->product.getPrice()) {
-                    swap(temp->product, temp->next->product);  // Меняем местами товары
+                if (temp->tovar.getPrice() > temp->next->tovar.getPrice()) {
+                    swap(temp->tovar, temp->next->tovar);
                     swapped = true;
                 }
                 temp = temp->next;
@@ -159,16 +153,15 @@ public:
         } while (swapped);
     }
 
-    // Метод для сортировки списка по имени (пузырьковая сортировка)
     void sortByName() {
         if (!head || !head->next) return;
         bool swapped;
         do {
             swapped = false;
-            Node* temp = head;
+            Node<F>* temp = head;
             while (temp->next) {
-                if (temp->product.getName() > temp->next->product.getName()) {
-                    swap(temp->product, temp->next->product);
+                if (temp->tovar.getName() > temp->next->tovar.getName()) {
+                    swap(temp->tovar, temp->next->tovar);
                     swapped = true;
                 }
                 temp = temp->next;
@@ -176,16 +169,15 @@ public:
         } while (swapped);
     }
 
-    // Метод для сортировки списка по поставщику (пузырьковая сортировка)
     void sortByPlug() {
         if (!head || !head->next) return;
         bool swapped;
         do {
             swapped = false;
-            Node* temp = head;
+            Node<F>* temp = head;
             while (temp->next) {
-                if (temp->product.getPlug() > temp->next->product.getPlug()) {
-                    swap(temp->product, temp->next->product);
+                if (temp->tovar.getPlug() > temp->next->tovar.getPlug()) {
+                    swap(temp->tovar, temp->next->tovar);
                     swapped = true;
                 }
                 temp = temp->next;
@@ -193,103 +185,94 @@ public:
         } while (swapped);
     }
 
-    // Метод для фильтрации списка по цене (вывод товаров с ценой <= maxPrice)
     void filterByPrice(int maxPrice) const {
-        Node* temp = head;
+        Node<F>* temp = head;
         while (temp) {
-            if (temp->product.getPrice() <= maxPrice) {
-                temp->product.printShort();  // Выводим информацию о товаре
+            if (temp->tovar.getPrice() <= maxPrice) {
+                temp->tovar.printShort();
             }
             temp = temp->next;
         }
     }
 
-    // Метод для фильтрации списка по имени (вывод товаров с заданным именем)
     void filterByName(const string& name) const {
-        Node* temp = head;
+        Node<F>* temp = head;
         while (temp) {
-            if (temp->product.getName() == name) {
-                temp->product.printShort();
+            if (temp->tovar.getName() == name) {
+                temp->tovar.printShort();
             }
             temp = temp->next;
         }
     }
 
-    // Метод для фильтрации списка по поставщику (вывод товаров с заданным поставщиком)
     void filterByPlug(plugs filterPlug) const {
-        Node* temp = head;
+        Node<F>* temp = head;
         while (temp) {
-            if (temp->product.getPlug() == filterPlug) {
-                temp->product.printShort();
+            if (temp->tovar.getPlug() == filterPlug) {
+                temp->tovar.printShort();
             }
             temp = temp->next;
         }
     }
 
-    // Метод для создания подсписка по поставщику
-    List createSublistByPlug(plugs filterPlug) const {
-        List sublist;
-        Node* temp = head;
+    List<F> createSublistByPlug(plugs filterPlug) const {
+        List<F> sublist;
+        Node<F>* temp = head;
         while (temp) {
-            if (temp->product.getPlug() == filterPlug) {
-                sublist.addProduct(temp->product);  // Добавляем товар в подсписок
-            }
-            temp = temp->next;
-        }
-        return sublist;
-    }
-
-    // Метод для создания подсписка по цене (товары с ценой <= maxPrice)
-    List createSublistByPrice(int maxPrice) const {
-        List sublist;
-        Node* temp = head;
-        while (temp) {
-            if (temp->product.getPrice() <= maxPrice) {
-                sublist.addProduct(temp->product);
+            if (temp->tovar.getPlug() == filterPlug) {
+                sublist.addProduct(temp->tovar);
             }
             temp = temp->next;
         }
         return sublist;
     }
 
-    // Метод для создания подсписка по имени (товары с заданным именем)
-    List createSublistByName(const string& name) const {
-        List sublist;
-        Node* temp = head;
+    List<F> createSublistByPrice(int maxPrice) const {
+        List<F> sublist;
+        Node<F>* temp = head;
         while (temp) {
-            if (temp->product.getName() == name) {
-                sublist.addProduct(temp->product);
+            if (temp->tovar.getPrice() <= maxPrice) {
+                sublist.addProduct(temp->tovar);
             }
             temp = temp->next;
         }
         return sublist;
     }
 
-    // Метод для вывода краткой информации о всех товарах в списке
+    List<F> createSublistByName(const string& name) const {
+        List<F> sublist;
+        Node<F>* temp = head;
+        while (temp) {
+            if (temp->tovar.getName() == name) {
+                sublist.addProduct(temp->tovar);
+            }
+            temp = temp->next;
+        }
+        return sublist;
+    }
+
     void printListShort() const {
-        Node* temp = head;
+        Node<F>* temp = head;
         while (temp) {
-            temp->product.printShort();
+            temp->tovar.printShort();
             temp = temp->next;
         }
     }
 
-    // Метод для сохранения списка товаров в файл
     void saveToFile(const string& filename) const {
         ofstream file(filename);
         if (!file) {
             cerr << "Error opening file for writing!" << endl;
             return;
         }
-        Node* temp = head;
+        Node<F>* temp = head;
         while (temp) {
-            temp->product.saveToFile(file);  // Сохраняем каждый товар в файл
+            temp->tovar.saveToFile(file);
             temp = temp->next;
         }
         file.close();
     }
 
-    // Метод для загрузки списка товаров из файла
     void loadFromFile(const string& filename) {
         ifstream file(filename);
         if (!file) {
@@ -297,9 +280,8 @@ public:
             return;
         }
 
-        // Очищаем текущий список перед загрузкой новых данных
         while (head) {
-            Node* temp = head;
+            Node<F>* temp = head;
             head = head->next;
             delete temp;
         }
@@ -308,8 +290,7 @@ public:
         int id, price, plug;
         string name;
         while (file >> id >> name >> price >> plug) {
-            // Создаем новый товар и добавляем его в список
-            Product newProduct(id, name, price, static_cast<plugs>(plug));
+            F newProduct(id, name, price, static_cast<plugs>(plug));
             addProduct(newProduct);
         }
 
@@ -319,7 +300,7 @@ public:
 
 // Основная функция
 int main() {
-    List products;
+    List<Product> products;
     // Добавляем товары в список
     products.addProduct(Product(1, "Ahaha", 500, plug1));
     products.addProduct(Product(2, "Ohoho", 1500, plug2));
