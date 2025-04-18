@@ -95,16 +95,8 @@ public:
         // Векторы AB и BC (стороны прямоугольника)
         int ABx = Bx - Ax, ABy = By - Ay;
         int BCx = Cx - Bx, BCy = Cy - By;
-
     
-        // Проверка условий:
-        // 1. Все точки в одной плоскости (Z одинаковы)
-        bool isFlat = (Az == Bz) && (Bz == Cz) && (Cz == Dz);
-        
-        // 2. Стороны AB и BC перпендикулярны (скалярное произведение = 0)
-        bool isPerpendicular = (ABx * BCx + ABy * BCy) == 0;
-    
-        if (isFlat && isPerpendicular) {
+        if ((Az == Bz) && (Bz == Cz) && (Cz == Dz) && ((ABx * BCx + ABy * BCy) == 0)) {
             double lengthAB = sqrt(ABx*ABx + ABy*ABy);
             double lengthBC = sqrt(BCx*BCx + BCy*BCy);
             area = lengthAB * lengthBC;
