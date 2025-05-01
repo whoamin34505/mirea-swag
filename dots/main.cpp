@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <math.h>
+#include <fstream>
 
 
 using namespace std;
@@ -27,9 +28,6 @@ public:
     }
 };
 
-   
-
-};
 
 class Line : public Point {
 private:
@@ -128,7 +126,6 @@ public:
     }
 };
 
-};
 
 class Parallelepiped: public Rectangle {
 private:
