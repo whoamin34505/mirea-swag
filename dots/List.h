@@ -42,8 +42,8 @@ public:
         }
     }
 
-    void addProduct(const T& product) {
-        Node<T>* newNode = new Node<T>(product);
+    void add(const T& element) {
+        Node<T>* newNode = new Node<T>(element);
         if (!head) {
             head = tail = newNode;
         } else {
@@ -182,7 +182,7 @@ public:
         return sublist;
     }
 
-    void printListShort() const {
+    void print() const {
         Node<T>* temp = head;
         while (temp) {
             temp->data.printData();
