@@ -1,5 +1,6 @@
 #pragma once
 #include "Line.h"
+#include "GeometryException.h"
 
 class Rectangle: public Line {
     protected:
@@ -18,15 +19,32 @@ class Rectangle: public Line {
         int getP4Y() const { return p4.getY(); }
         int getP4Z() const { return p4.getZ(); }
     
-        void setP3X(int newX) { p3.setX(newX); updateArea(); }
-        void setP3Y(int newY) { p3.setY(newY); updateArea(); }
-        void setP3Z(int newZ) { p3.setZ(newZ); updateArea(); }
-        
-        void setP4X(int newX) { p4.setX(newX); updateArea(); }
-        void setP4Y(int newY) { p4.setY(newY); updateArea(); }
-        void setP4Z(int newZ) { p4.setZ(newZ); updateArea(); }
+        void setP3(const Point& p) {
+            if (p.getX() < -1000 || p.getX() > 1000 ||
+                p.getY() < -1000 || p.getY() > 1000 ||
+                p.getZ() < -1000 || p.getZ() > 1000) {
+                throw InvalidPointException("Coordinates out of range [-1000, 1000]");
+            }
+            p3 = p;
+            updateArea();
+        }
     
-        double getArea() const { return area; }
+        void setP4(const Point& p) {
+            if (p.getX() < -1000 || p.getX() > 1000 ||
+                p.getY() < -1000 || p.getY() > 1000 ||
+                p.getZ() < -1000 || p.getZ() > 1000) {
+                throw InvalidPointException("Coordinates out of range [-1000, 1000]");
+            }
+            p4 = p;
+            updateArea();
+        }
+    
+        double getArea() const { 
+            if (area <= 0) {
+                throw InvalidRectangleException("Invalid rectangle - area must be positive");
+            }
+            return area; 
+        }
         void updateArea() {
             // Координаты всех точек прямоугольника
             int Ax = getX(), Ay = getY(), Az = getZ();
@@ -38,12 +56,13 @@ class Rectangle: public Line {
             int ABx = Bx - Ax, ABy = By - Ay;
             int BCx = Cx - Bx, BCy = Cy - By;
         
+            
             if ((Az == Bz) && (Bz == Cz) && (Cz == Dz) && ((ABx * BCx + ABy * BCy) == 0)) {
                 double lengthAB = sqrt(ABx*ABx + ABy*ABy);
                 double lengthBC = sqrt(BCx*BCx + BCy*BCy);
                 area = lengthAB * lengthBC;
             } else {
-                area = -1; // возвращается -1 если не является прямоугольником
+                throw InvalidRectangleException("All points must be in the same plane");
             }
         }
         void printData() const {

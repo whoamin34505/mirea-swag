@@ -1,5 +1,6 @@
 #pragma once
 #include "Rectangle.h"
+#include "GeometryException.h"
 
 class Parallelepiped: public Rectangle {
     private:
@@ -7,8 +8,19 @@ class Parallelepiped: public Rectangle {
         double volume;
     public:
         Parallelepiped(): Rectangle(), p5(0,0,0), p6(0,0,0), p7(0,0,0), p8(0,0,0), volume(0) {}
-        Parallelepiped(int x1, int y1, int z1, int x2, int y2, int z2, int x3, int y3, int z3, int x4, int y4, int z4, int x5, int y5, int z5, int x6, int y6, int z6, int x7, int y7, int z7, int x8, int y8, int z8): Rectangle(x1,y1,z1,x2,y2,z2,x3,y3,z3,x4,y4,z4), p5(x5,y5,z5), p6(x6,y6,z6), p7(x7,y7,z7), p8(x8,y8,z8) { updateVolume(); }
+        Parallelepiped(int x1, int y1, int z1, int x2, int y2, int z2, 
+            int x3, int y3, int z3, int x4, int y4, int z4,
+            int x5, int y5, int z5, int x6, int y6, int z6,
+            int x7, int y7, int z7, int x8, int y8, int z8): Rectangle(x1,y1,z1,x2,y2,z2,x3,y3,z3,x4,y4,z4), p5(x5,y5,z5), p6(x6,y6,z6), p7(x7,y7,z7), p8(x8,y8,z8) {
+  try {
+      updateVolume();
+  } catch (const GeometryException& e) {
+      volume = -1;
+      throw;
+  }
+}
     
+
         int getP5X() const { return p5.getX(); }
         int getP5Y() const { return p5.getY(); }
         int getP5Z() const { return p5.getZ(); }
@@ -24,24 +36,55 @@ class Parallelepiped: public Rectangle {
         int getP8X() const { return p8.getX(); }
         int getP8Y() const { return p8.getY(); }
         int getP8Z() const { return p8.getZ(); }
+
+
+        void setP5(const Point& p) {
+            if (p.getX() < -1000 || p.getX() > 1000 ||
+                p.getY() < -1000 || p.getY() > 1000 ||
+                p.getZ() < -1000 || p.getZ() > 1000) {
+                throw InvalidPointException("Coordinates out of range [-1000, 1000]");
+            }
+            p5 = p;
+            updateVolume();
+        }
+
+        void setP6(const Point& p) {
+            if (p.getX() < -1000 || p.getX() > 1000 ||
+                p.getY() < -1000 || p.getY() > 1000 ||
+                p.getZ() < -1000 || p.getZ() > 1000) {
+                throw InvalidPointException("Coordinates out of range [-1000, 1000]");
+            }
+            p6 = p;
+            updateVolume();
+        }
+
+        void setP7(const Point& p) {
+            if (p.getX() < -1000 || p.getX() > 1000 ||
+                p.getY() < -1000 || p.getY() > 1000 ||
+                p.getZ() < -1000 || p.getZ() > 1000) {
+                throw InvalidPointException("Coordinates out of range [-1000, 1000]");
+            }
+            p7 = p;
+            updateVolume();
+        }
+
+        void setP8(const Point& p) {
+            if (p.getX() < -1000 || p.getX() > 1000 ||
+                p.getY() < -1000 || p.getY() > 1000 ||
+                p.getZ() < -1000 || p.getZ() > 1000) {
+                throw InvalidPointException("Coordinates out of range [-1000, 1000]");
+            }
+            p8 = p;
+            updateVolume();
+        }
     
-        void setP5X(int newX) { p5.setX(newX); updateVolume(); }
-        void setP5Y(int newY) { p5.setY(newY); updateVolume(); }
-        void setP5Z(int newZ) { p5.setZ(newZ); updateVolume(); }
     
-        void setP6X(int newX) { p6.setX(newX); updateVolume(); }
-        void setP6Y(int newY) { p6.setY(newY); updateVolume(); }
-        void setP6Z(int newZ) { p6.setZ(newZ); updateVolume(); }
-    
-        void setP7X(int newX) { p7.setX(newX); updateVolume(); }
-        void setP7Y(int newY) { p7.setY(newY); updateVolume(); }
-        void setP7Z(int newZ) { p7.setZ(newZ); updateVolume(); }
-    
-        void setP8X(int newX) { p8.setX(newX); updateVolume(); }
-        void setP8Y(int newY) { p8.setY(newY); updateVolume(); }
-        void setP8Z(int newZ) { p8.setZ(newZ); updateVolume(); }
-    
-        double getVolume() const { return volume; }
+        double getVolume() const { 
+            if (volume < 0) {
+                throw InvalidParallelepipedException("Invalid parallelepiped - volume cannot be negative");
+            }
+            return volume; 
+        }
         void updateVolume() {
             // Получение координат всех 8 вершин. ABCD - вершины нижнего основания, EFGH - верхнего основания
             int Ax = getX(), Ay = getY(), Az = getZ();
@@ -58,8 +101,7 @@ class Parallelepiped: public Rectangle {
             Rectangle base2(Ex, Ey, Ez, Fx, Fy, Fz, Gx, Gy, Gz, Hx, Hy, Hz);
         
             if (base1.getArea() <= 0 || base2.getArea() <= 0) {
-                volume = -1;
-                return;
+                throw InvalidParallelepipedException("Base area must be positive");
             }
         
             int AEx = Ex - Ax, AEy = Ey - Ay, AEz = Ez - Az; // AE - вектор, показывающий как смещается точка A в точку E
