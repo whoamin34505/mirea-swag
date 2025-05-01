@@ -42,7 +42,7 @@ public:
  int getpX() const { return p.getX(); }
  int getpY() const { return p.getY(); }
  int getpZ() const { return p.getZ(); }
- double getLenght() const { return length; }
+ double getLength() const { return length; }
  
  void updateLength () {
   length = sqrt(pow(p.getX() - x, 2) + pow(p.getY() - y, 2) + pow(p.getZ() - z, 2));
@@ -62,7 +62,7 @@ public:
     << "Y_2 coord: " << p.getY() << "\n"
     << "Z_2 coord: " << p.getZ() << "\n"
 
-    << "Length: " << getLenght() << endl;
+    << "Length: " << getLength() << endl;
  }
  
 };
@@ -202,7 +202,7 @@ public:
         volume = base1.getArea() * height;
     }
 
-    void printParallelepiped() const {
+    void print_product() const {
         cout << "Points of the parallelepiped:" << endl;
         cout << "P1: " << getX() << ", " << getY() << ", " << getZ() << endl;
         cout << "P2: " << getpX() << ", " << getpY() << ", " << getpZ() << endl;
@@ -227,7 +227,7 @@ enum plugs {
 string plugToString(plugs plug) {
     switch (plug) {
         case plug1: return "HERONWATER";  // Возвращаем строку для plug1
-        case plug2: return "PLAYBOI CARTI";  // Возвращаем строку для plug2
+        case plug2: return "PLAYBOY CARTI";  // Возвращаем строку для plug2
         case plug3: return "BABY CUTE";  // Возвращаем строку для plug3
         default: return "Unknown";  // Возвращаем "Unknown" для неизвестных значений
     }
@@ -264,12 +264,12 @@ public:
     void setPlug(plugs newPlug) { plug = newPlug; }
 
     // Метод для вывода краткой информации о товаре
-    void printShort() const {
+    void print_product() const {
         cout << "ID: " << id << ", Name: " << name << ", Price: " << price << ", Plug: " << plugToString(plug) << endl;
     }
 
     // Метод для вывода подробной информации о товаре
-    void printDetailed() const {
+    void print_product_detailed() const {
         cout << "Product with ID " << id << " called " << name 
              << ". Cost price is " << price << " and the supplier is " << plugToString(plug) << "." << endl;
     }
@@ -284,11 +284,11 @@ public:
 template <typename T>
 class Node {
 public:
-    T tovar;
+    T data;
     Node* prev;
     Node* next;
 
-    Node(T new_tovar) : tovar(new_tovar), prev(nullptr), next(nullptr) {}
+    Node(const T& data) : data(data), prev(nullptr), next(nullptr) {}
 };
 
 // Класс "Список товаров"
@@ -400,7 +400,7 @@ public:
         Node<F>* temp = head;
         while (temp) {
             if (temp->tovar.getPrice() <= maxPrice) {
-                temp->tovar.printShort();
+                temp->tovar.print_product();
             }
             temp = temp->next;
         }
@@ -410,7 +410,7 @@ public:
         Node<F>* temp = head;
         while (temp) {
             if (temp->tovar.getName() == name) {
-                temp->tovar.printShort();
+                temp->tovar.print_product();
             }
             temp = temp->next;
         }
@@ -420,7 +420,7 @@ public:
         Node<F>* temp = head;
         while (temp) {
             if (temp->tovar.getPlug() == filterPlug) {
-                temp->tovar.printShort();
+                temp->tovar.print_product();
             }
             temp = temp->next;
         }
@@ -465,7 +465,7 @@ public:
     void printListShort() const {
         Node<F>* temp = head;
         while (temp) {
-            temp->tovar.printShort();
+            temp->tovar.print_product();
             temp = temp->next;
         }
     }
