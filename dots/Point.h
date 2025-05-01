@@ -9,7 +9,12 @@ class Point {
     public:
         Point() : x(0), y(0), z(0) {}
     
-        Point(int xx, int yy, int zz) :x(xx), y(yy), z(zz) {}
+        Point(int xx, int yy, int zz) {
+            if (xx < -1000 || xx > 1000 || yy < -1000 || yy > 1000 || zz < -1000 || zz > 1000) {
+                throw InvalidPointException("Coordinates out of range [-1000, 1000]");
+            }
+            x = xx; y = yy; z = zz;
+        }
         
         int getX() const { return x; }
         int getY() const { return y; }

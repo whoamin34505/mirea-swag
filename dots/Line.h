@@ -12,7 +12,14 @@ class Line : public Point {
     public:
      Line(): Point(), p(0,0,0), length(0) {}
      
-     Line(int x1, int y1, int z1, int x2, int y2, int z2): Point(x1,y1,z1), p(x2,y2,z2) { updateLength(); } 
+     Line(int x1, int y1, int z1, int x2, int y2, int z2): Point(x1,y1,z1), p(x2,y2,z2) { 
+        if (x1 < -1000 || x1 > 1000 || y1 < -1000 || y1 > 1000 || z1 < -1000 || z1 > 1000 ||
+            x2 < -1000 || x2 > 1000 || y2 < -1000 || y2 > 1000 || z2 < -1000 || z2 > 1000) {
+            throw InvalidPointException("Coordinates out of range [-1000, 1000]");
+        }
+        
+        updateLength();
+    } 
 
 
      

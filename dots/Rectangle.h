@@ -9,8 +9,18 @@ class Rectangle: public Line {
     public:
         Rectangle(): Line(), p3(0,0,0), p4(0,0,0), area(0) {}
     
-        Rectangle(int x1, int y1, int z1, int x2, int y2, int z2, int x3, int y3, int z3, int x4, int y4, int z4): Line(x1, y1, z1, x2, y2, z2), p3(x3, y3, z3), p4(x4, y4, z4) { updateArea();}
-        
+        Rectangle(int x1, int y1, int z1, int x2, int y2, int z2, 
+            int x3, int y3, int z3, int x4, int y4, int z4) 
+       : Line(x1,y1,z1,x2,y2,z2), p3(x3,y3,z3), p4(x4,y4,z4) {
+       
+       if (x3 < -1000 || x3 > 1000 || y3 < -1000 || y3 > 1000 || z3 < -1000 || z3 > 1000 ||
+           x4 < -1000 || x4 > 1000 || y4 < -1000 || y4 > 1000 || z4 < -1000 || z4 > 1000) {
+           throw InvalidPointException("Coordinates out of range [-1000, 1000]");
+       }
+       
+       updateArea();
+   }
+
         int getP3X() const { return p3.getX(); }
         int getP3Y() const { return p3.getY(); }
         int getP3Z() const { return p3.getZ(); }

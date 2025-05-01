@@ -11,13 +11,18 @@ class Parallelepiped: public Rectangle {
         Parallelepiped(int x1, int y1, int z1, int x2, int y2, int z2, 
             int x3, int y3, int z3, int x4, int y4, int z4,
             int x5, int y5, int z5, int x6, int y6, int z6,
-            int x7, int y7, int z7, int x8, int y8, int z8): Rectangle(x1,y1,z1,x2,y2,z2,x3,y3,z3,x4,y4,z4), p5(x5,y5,z5), p6(x6,y6,z6), p7(x7,y7,z7), p8(x8,y8,z8) {
-  try {
-      updateVolume();
-  } catch (const GeometryException& e) {
-      volume = -1;
-      throw;
+            int x7, int y7, int z7, int x8, int y8, int z8)
+  : Rectangle(x1,y1,z1,x2,y2,z2,x3,y3,z3,x4,y4,z4), 
+    p5(x5,y5,z5), p6(x6,y6,z6), p7(x7,y7,z7), p8(x8,y8,z8) {
+  
+  if (x5 < -1000 || x5 > 1000 || y5 < -1000 || y5 > 1000 || z5 < -1000 || z5 > 1000 ||
+      x6 < -1000 || x6 > 1000 || y6 < -1000 || y6 > 1000 || z6 < -1000 || z6 > 1000 ||
+      x7 < -1000 || x7 > 1000 || y7 < -1000 || y7 > 1000 || z7 < -1000 || z7 > 1000 ||
+      x8 < -1000 || x8 > 1000 || y8 < -1000 || y8 > 1000 || z8 < -1000 || z8 > 1000) {
+      throw InvalidPointException("Coordinates out of range [-1000, 1000]");
   }
+  
+  updateVolume();
 }
     
 
