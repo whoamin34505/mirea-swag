@@ -24,7 +24,7 @@ public:
     List(const List& other) : head(nullptr), tail(nullptr) {
         Node<T>* temp = other.head;
         while (temp) {
-            addProduct(temp->data);
+            add(temp->data);
             temp = temp->next;
         }
     }
@@ -151,7 +151,7 @@ public:
         Node<T>* temp = head;
         while (temp) {
             if (temp->data.getPlug() == plug) {
-                sublist.addProduct(temp->data);
+                sublist.add(temp->data);
             }
             temp = temp->next;
         }
@@ -163,7 +163,7 @@ public:
         Node<T>* temp = head;
         while (temp) {
             if (temp->data.getPrice() <= maxPrice) {
-                sublist.addProduct(temp->data);
+                sublist.add(temp->data);
             }
             temp = temp->next;
         }
@@ -175,7 +175,7 @@ public:
         Node<T>* temp = head;
         while (temp) {
             if (temp->data.getName() == name) {
-                sublist.addProduct(temp->data);
+                sublist.add(temp->data);
             }
             temp = temp->next;
         }
@@ -227,14 +227,14 @@ public:
         string name;
         while (file >> id >> name >> price >> plug) {
             T newProduct(id, name, price, static_cast<plugs>(plug));
-            addProduct(newProduct);
+            add(newProduct);
         }
 
         file.close();
     }
 
     List<T>& operator+(const T& product) {
-        addProduct(product);
+        add(product);
         return *this;
     }
 

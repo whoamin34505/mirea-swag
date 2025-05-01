@@ -8,9 +8,11 @@
 #include "ProductException.h"
 
 int main() {
-// ahaha
-    
-        return 0;
-    }
+    List<Point> p1;
+    p1.add(Point(-1000,0,1)); // нет ошибки
+    p1.print();
 
-
+    Point p2(2000,0,1);
+    p2.printData(); // есть ошибка
+    return 0;
+}
