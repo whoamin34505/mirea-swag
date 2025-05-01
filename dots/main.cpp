@@ -71,5 +71,28 @@
 
 
 int main() {
-    
+    List<Point> points;
+    points.add(Point(1, 2, 3));
+    List<Line> lines;
+    lines.add(Line(1, 2, 3, 4, 5, 6));
+    lines.saveToFile("lines.txt");
+    lines.print();
+    List<Parallelepiped> parallelepiped;
+    Parallelepiped p1(0,0,0, 3,0,0, 3,4,0, 0,4,0,  // нижняя грань
+        0,0,5, 3,0,5, 3,4,5, 0,4,5); // верхняя грань
+
+// Создаем неправильный параллелепипед (некорректные точки)
+Parallelepiped p2(0,0,0, 1,0,0, 1,1,0, 0,1,0,
+        0,0,1, 2,0,1, 1,1,1, 0,1,1);
+
+parallelepiped.add(p1);
+parallelepiped.add(p2);
+
+parallelepiped.print();
+
+List<Rectangle> rectangle;
+rectangle.add(Rectangle(1,0,0,1,0,2,1,2,3,4,5,6));
+rectangle.print();
+
+return 0;
 }

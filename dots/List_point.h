@@ -1,15 +1,10 @@
 #pragma once
 #include "Point.h"
-#include "Node.h"
+#include "List.h"
 #include <fstream>
 #include <iostream>
 
-// Сначала нужно убедиться, что основной шаблон List объявлен
-// Обычно это делается в отдельном файле List.h
-template <typename T>
-class List;  // Предварительное объявление
 
-// Явная специализация для Point
 template <>
 class List<Point> {
 private:
@@ -22,7 +17,7 @@ public:
     List(const List& other) : head(nullptr), tail(nullptr) {
         Node<Point>* temp = other.head;
         while (temp) {
-            add(temp->data);  // Используем единый метод add
+            add(temp->data);
             temp = temp->next;
         }
     }
@@ -56,25 +51,7 @@ public:
         }
     }
 
-    bool deletePointByCoordinates(int x, int y, int z) {
-        Node<Point>* temp = head;
-        while (temp) {
-            if (temp->data.getX() == x && 
-                temp->data.getY() == y && 
-                temp->data.getZ() == z) {
-                
-                if (temp->prev) temp->prev->next = temp->next;
-                if (temp->next) temp->next->prev = temp->prev;
-                if (temp == head) head = temp->next;
-                if (temp == tail) tail = temp->prev;
-                
-                delete temp;
-                return true;  // Успешно удалено
-            }
-            temp = temp->next;
-        }
-        return false;  // Точка не найдена
-    }
+   
 
     void print() const {
         Node<Point>* temp = head;
@@ -109,7 +86,7 @@ public:
             return false;
         }
 
-        clear();  // Очищаем текущий список
+        clear(); 
 
         int x, y, z;
         while (file >> x >> y >> z) {
@@ -125,18 +102,10 @@ public:
         return *this;
     }
 
-    List<Point>& operator-=(const Point& point) {
-        deletePointByCoordinates(point.getX(), point.getY(), point.getZ());
-        return *this;
-    }
 
     friend List<Point> operator+(List<Point> list, const Point& point) {
         list += point;
         return list;
     }
 
-    friend List<Point> operator-(List<Point> list, const Point& point) {
-        list -= point;
-        return list;
-    }
 };

@@ -46,16 +46,11 @@ class Rectangle: public Line {
                 area = -1; // возвращается -1 если не является прямоугольником
             }
         }
-        void printData() const
-        {
-            std::cout << "X_3 coord: " << p3.getX() << "\n"
-            << "Y_3 coord: " << p3.getY() << "\n"
-            << "Z_3 coord: " << p3.getZ() << "\n"
-    
-            << "X_4 coord: " << p4.getX() << "\n"
-            << "Y_4 coord: " << p4.getY() << "\n"
-            << "Z_4 coord: " << p4.getZ() << "\n"
-    
-            << "Area: " << getArea() << std::endl;
+        void printData() const {
+            std::cout << "P1: (" << getX() << ", " << getY() << ", " << getZ() << ")\n"
+                      << "P2: (" << getpX() << ", " << getpY() << ", " << getpZ() << ")\n"
+                      << "P3: (" << p3.getX() << ", " << p3.getY() << ", " << p3.getZ() << ")\n"
+                      << "P4: (" << p4.getX() << ", " << p4.getY() << ", " << p4.getZ() << ")\n"
+                      << "Area: " << getArea() << std::endl;
         }
     };
