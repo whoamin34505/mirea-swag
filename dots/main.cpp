@@ -16,8 +16,46 @@ int main() {
     // p2.setX(-2000);
 
     List<Line> line;
-    line.add(Line(1,1,1,0,0,0));
-    line.saveToFile("file.txt");
-    line.loadFromFile("file.txt");
+    try{
+        line.add(Line(0,0,0,0,0,0));
+        line.saveToFile("file.txt");
+        line.loadFromFile("file.txt");
+    }
+    catch(const std::exception &e) {
+        std::cout << e.what() << '\n';
+    }
+    
+    try{
+        Point p(1500, 0, 0); 
+    }
+    catch(const std::exception &e){
+        std::cout << e.what() << '\n';
+    }
+
+    List<Point> p1;
+    try{
+        p1.add(Point(-1000,0,1));
+        p1.print();
+    }
+    catch(const std::exception &e){
+        std::cout<<e.what()<<'\n';
+    }
+
+    try{
+        Point p2(1, 2, 3);
+        p2.setX(-2000);
+    }
+    catch(const std::exception &e){
+        std::cout<<e.what()<<'\n';
+    }
+
+    List<Product> product;
+    try{
+        product.add(Product(0,"",-999.0,plug1));
+        product.print();
+    }
+    catch(const std::exception &e){
+        std::cout<<e.what()<<'\n';
+    }
     return 0;
 }
