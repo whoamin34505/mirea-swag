@@ -57,5 +57,14 @@ int main() {
     catch(const std::exception &e){
         std::cout<<e.what()<<'\n';
     }
+
+    List<Rectangle> rec;
+    try {
+        rec.add(Rectangle(0,1,0,2,3,4,1,4,5,6,1,6));
+        rec.print();
+    }
+    catch(const std::exception &e){
+        std::cout<<e.what()<<'\n';
+    }
     return 0;
 }
