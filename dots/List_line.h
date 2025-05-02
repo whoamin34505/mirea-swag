@@ -101,9 +101,5 @@ public:
     }
 
 
-    friend List<Line> operator+(List<Line> list, const Line& Line) {
-        list += Line;
-        return list;
-    }
 
 };
