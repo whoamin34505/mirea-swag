@@ -35,9 +35,8 @@ int main(){
         s.printData();
     }
     std::cout << std::endl;
-
+    
     auto worst_it=students.begin(), best_it=students.begin();
-    std::vector<Student>::iterator it = students.begin();
     for (auto it = students.begin(); it != students.end(); ++it) {
         if (it->getAvg() < worst_it->getAvg()) {
             worst_it = it;
