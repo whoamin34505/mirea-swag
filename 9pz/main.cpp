@@ -39,6 +39,7 @@ public:
     }
 };
 
+
 std::map<std::string, Book> books;
 std::set<std::string> genres;
 std::array<std::string, 3> zones = {"Zone A", "Zone B", "Zone C"};
