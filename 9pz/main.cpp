@@ -110,15 +110,15 @@ void removeBook(const std::string& title) {
 // Вывод по жанру
 void listByGenre(const std::string& genre) {
     std::cout << "\nBooks in genre: " << genre << "\n";
-    bool found = false;
+    int flag = 0;  
     for (const auto& [title, book] : books) {
         if (book.getGenre() == genre) {
             book.printInfo();
             std::cout << "----------\n";
-            found = true;
+            flag = 1; 
         }
     }
-    if (!found) std::cout << "No books in this genre.\n";
+    if (flag == 0) std::cout << "No books in this genre.\n";
 }
 
 int main() {
